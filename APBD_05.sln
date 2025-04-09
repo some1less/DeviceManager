@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APBD_05", "APBD_05\APBD_05.csproj", "{461373FE-1BD9-482A-8538-5F5F7C7D3371}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{461373FE-1BD9-482A-8538-5F5F7C7D3371}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{FDAA6BA4-AAB3-4FAF-B06E-1AA4042310F7}"
 EndProject

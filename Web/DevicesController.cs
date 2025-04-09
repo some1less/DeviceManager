@@ -10,7 +10,7 @@ public class DevicesController : ControllerBase
 {
 
     
-    [HttpGet]
+    [HttpGet("/")]
     public IResult GetDevices()
     {
         return Results.Ok(DeviceData.Devices);

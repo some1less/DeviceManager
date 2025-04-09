@@ -9,14 +9,11 @@ public class DeviceManager
 
         public DeviceManager() { }
         
-        public IEnumerable<Device> GetDevices()
+        public IEnumerable<Device> GetDevices() => devices;
+        
+        public Device GetDeviceById(string id)
         {
-            return devices;
-        }
-
-        public Device GetDevice(string id)
-        {
-            return devices.FirstOrDefault(d => d.Id == id);
+            return devices.FirstOrDefault(d => d.Id.Equals(id));
         }
         
         public void AddDevice(Device device)
@@ -28,7 +25,7 @@ public class DeviceManager
 
         public void EditDeviceData(string deviceId, Device newDeviceData)
         {
-            var device = GetDevice(deviceId);
+            var device = GetDeviceById(deviceId);
             if (device == null)
                 throw new Exception("Device not found.");
 
@@ -55,7 +52,7 @@ public class DeviceManager
 
         public void RemoveDevice(string deviceId)
         {
-            var device = GetDevice(deviceId);
+            var device = GetDeviceById(deviceId);
             if (device == null)
                 throw new Exception("Device not found.");
             devices.Remove(device);

@@ -4,23 +4,16 @@ namespace Logic;
 
 public class DeviceManager
 {
-    private List<Device> devices = new List<Device>();
-        private readonly int maxDevices = 15;
-
-        public DeviceManager() { }
-        
-        public IEnumerable<Device> GetDevices() => devices;
+        public static DeviceManager Instance { get; } = new DeviceManager();
         
         public Device GetDeviceById(string id)
         {
-            return devices.FirstOrDefault(d => d.Id.Equals(id));
+            return DeviceData.Devices.FirstOrDefault(d => d.Id.Equals(id));
         }
         
         public void AddDevice(Device device)
         {
-            if (devices.Count >= maxDevices)
-                throw new Exception("Device storage is full.");
-            devices.Add(device);
+            DeviceData.Devices.Add(device);
         }
 
         public void EditDeviceData(string deviceId, Device newDeviceData)
@@ -29,11 +22,9 @@ public class DeviceManager
             if (device == null)
                 throw new Exception("Device not found.");
 
-            if (device.GetType() != newDeviceData.GetType())
-                throw new Exception("Device type mismatch.");
-
             device.Name = newDeviceData.Name;
             device.IsTurnedOn = newDeviceData.IsTurnedOn;
+
 
             if (device is Smartwatch sw && newDeviceData is Smartwatch newSw)
             {
@@ -55,6 +46,6 @@ public class DeviceManager
             var device = GetDeviceById(deviceId);
             if (device == null)
                 throw new Exception("Device not found.");
-            devices.Remove(device);
+            DeviceData.Devices.Remove(device);
         }
 }

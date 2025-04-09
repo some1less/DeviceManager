@@ -1,3 +1,7 @@
+using Logic;
+
+DeviceData.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

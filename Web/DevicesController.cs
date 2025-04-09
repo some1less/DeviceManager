@@ -8,25 +8,12 @@ namespace APBD_05;
 [Route("api/[controller]")]
 public class DevicesController : ControllerBase
 {
-    private readonly DeviceManager _deviceManager;
-
-    public DevicesController(DeviceManager deviceManager)
-    {
-        _deviceManager = deviceManager;
-    }
 
     
     [HttpGet]
     public IResult GetDevices()
     {
-        var list = _deviceManager.GetDevices()
-            .Select(d => new 
-            {
-                d.Id,
-                d.Name,
-                d.IsTurnedOn
-            });
-        return Results.Ok(list);
+        return Results.Ok(DeviceData.Devices);
     }
 
     [HttpGet("/{id}")]
@@ -34,7 +21,7 @@ public class DevicesController : ControllerBase
     {
         try
         {
-            return Results.Ok(_deviceManager.GetDeviceById(id));
+            return Results.Ok(DeviceManager.Instance.GetDeviceById(id));
         }
         catch
         {
@@ -45,29 +32,29 @@ public class DevicesController : ControllerBase
     [HttpPost("/SmartWatch")]
     public IResult AddDevice(Smartwatch device)
     {
-        _deviceManager.AddDevice(device);
+        DeviceManager.Instance.AddDevice(device);
         return Results.Ok(device);
     }
     [HttpPost("/PersonalComputer")]
     public IResult AddDevice(PersonalComputer device)
     {
-        _deviceManager.AddDevice(device);
+        DeviceManager.Instance.AddDevice(device);
         return Results.Ok(device);
     }
     [HttpPost("/EmbeddedDevice")]
     public IResult AddDevice(EmbeddedDevice device)
     {
-        _deviceManager.AddDevice(device);
+        DeviceManager.Instance.AddDevice(device);
         return Results.Ok(device);
     }
     
     [HttpPut("/SmartWatch/{id}")]
     public IResult UpdateSmartWatch(string id, [FromBody] Smartwatch device)
     {
-        _deviceManager.EditDeviceData(id, device);
+        DeviceManager.Instance.EditDeviceData(id, device);
         try
         {
-            return Results.Ok(_deviceManager.GetDeviceById(id));
+            return Results.Ok(DeviceManager.Instance.GetDeviceById(id));
         }
         catch
         {
@@ -78,10 +65,10 @@ public class DevicesController : ControllerBase
     [HttpPut("/PersonalComputer/{id}")]
     public IResult UpdatePersonalComputer(string id, [FromBody] PersonalComputer device)
     {
-        _deviceManager.EditDeviceData(id, device);
+        DeviceManager.Instance.EditDeviceData(id, device);
         try
         {
-            return Results.Ok(_deviceManager.GetDeviceById(id));
+            return Results.Ok(DeviceManager.Instance.GetDeviceById(id));
         }
         catch
         {
@@ -92,10 +79,10 @@ public class DevicesController : ControllerBase
     [HttpPut("/EmbeddedDevice/{id}")]
     public IResult UpdateEmbeddedDevice(string id, [FromBody] EmbeddedDevice device)
     {
-        _deviceManager.EditDeviceData(id, device);
+        DeviceManager.Instance.EditDeviceData(id, device);
         try
         {
-            return Results.Ok(_deviceManager.GetDeviceById(id));
+            return Results.Ok(DeviceManager.Instance.GetDeviceById(id));
         }
         catch
         {
@@ -108,7 +95,7 @@ public class DevicesController : ControllerBase
     {
         try
         {
-            _deviceManager.RemoveDevice(id);
+            DeviceManager.Instance.RemoveDevice(id);
             return Results.Ok();
         }
         catch

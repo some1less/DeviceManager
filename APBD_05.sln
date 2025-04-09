@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APBD_05", "APBD_05\APBD_05.csproj", "{461373FE-1BD9-482A-8538-5F5F7C7D3371}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{FDAA6BA4-AAB3-4FAF-B06E-1AA4042310F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{461373FE-1BD9-482A-8538-5F5F7C7D3371}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{461373FE-1BD9-482A-8538-5F5F7C7D3371}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{461373FE-1BD9-482A-8538-5F5F7C7D3371}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDAA6BA4-AAB3-4FAF-B06E-1AA4042310F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDAA6BA4-AAB3-4FAF-B06E-1AA4042310F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDAA6BA4-AAB3-4FAF-B06E-1AA4042310F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDAA6BA4-AAB3-4FAF-B06E-1AA4042310F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

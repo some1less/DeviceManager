@@ -4,11 +4,7 @@ public class Smartwatch : Device
 {
     private int _batteryLevel;
 
-    public int BatteryLevel
-    {
-        get { return _batteryLevel; }
-        set { _batteryLevel = value; }
-    }
+    public int BatteryLevel { get; set; }
 
     public Smartwatch(string id, string name, bool isTurnedOn, int batteryLevel)
         : base(id, name, isTurnedOn)

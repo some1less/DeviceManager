@@ -8,15 +8,16 @@ namespace APBD_05;
 [Route("api/[controller]")]
 public class DevicesController : ControllerBase
 {
-
     
-    [HttpGet("/")]
+    // GET api/devices
+    [HttpGet]
     public IResult GetDevices()
     {
         return Results.Ok(DeviceData.Devices);
     }
 
-    [HttpGet("/{id}")]
+    // GET api/devices/SW-1
+    [HttpGet("{id}")]
     public IResult GetDevice(string id)
     {
         try
@@ -28,27 +29,29 @@ public class DevicesController : ControllerBase
             return Results.NotFound();
         }
     }
-
-    [HttpPost("/SmartWatch")]
+    
+    // POST api/devices/
+    [HttpPost("SmartWatch")]
     public IResult AddDevice(Smartwatch device)
     {
         DeviceManager.Instance.AddDevice(device);
         return Results.Ok(device);
     }
-    [HttpPost("/PersonalComputer")]
+    
+    [HttpPost("PersonalComputer")]
     public IResult AddDevice(PersonalComputer device)
     {
         DeviceManager.Instance.AddDevice(device);
         return Results.Ok(device);
     }
-    [HttpPost("/EmbeddedDevice")]
+    [HttpPost("EmbeddedDevice")]
     public IResult AddDevice(EmbeddedDevice device)
     {
         DeviceManager.Instance.AddDevice(device);
         return Results.Ok(device);
     }
     
-    [HttpPut("/SmartWatch/{id}")]
+    [HttpPut("SmartWatch/{id}")]
     public IResult UpdateSmartWatch(string id, [FromBody] Smartwatch device)
     {
         DeviceManager.Instance.EditDeviceData(id, device);
@@ -62,7 +65,7 @@ public class DevicesController : ControllerBase
         }
     }
     
-    [HttpPut("/PersonalComputer/{id}")]
+    [HttpPut("PersonalComputer/{id}")]
     public IResult UpdatePersonalComputer(string id, [FromBody] PersonalComputer device)
     {
         DeviceManager.Instance.EditDeviceData(id, device);
@@ -76,7 +79,8 @@ public class DevicesController : ControllerBase
         }
     }
     
-    [HttpPut("/EmbeddedDevice/{id}")]
+    
+    [HttpPut("EmbeddedDevice/{id}")]
     public IResult UpdateEmbeddedDevice(string id, [FromBody] EmbeddedDevice device)
     {
         DeviceManager.Instance.EditDeviceData(id, device);
@@ -90,7 +94,8 @@ public class DevicesController : ControllerBase
         }
     }
     
-    [HttpDelete("/{id}")]
+    // DELETE api/devices/SW-1
+    [HttpDelete("{id}")]
     public IResult DeleteDevice(string id)
     {
         try

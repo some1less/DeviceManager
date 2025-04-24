@@ -15,6 +15,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\apbd_05.Logic\Logic.csproj" />
+      <ProjectReference Include="..\apbd_05.ServiceLogic\apbd_05.ServiceLogic.csproj" />
     </ItemGroup>
 
 </Project>

@@ -2,8 +2,9 @@
 
 public class PersonalComputer : Device
 {
-    public string OperationSystem { get; set; }
+    public string? OperationSystem { get; set; }
 
+    public PersonalComputer(){}
     public PersonalComputer(string id, string name, bool isTurnedOn, string operationSystem)
         : base(id, name, isTurnedOn)
     {

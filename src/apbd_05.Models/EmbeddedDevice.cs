@@ -18,6 +18,7 @@ public class EmbeddedDevice : Device
 
     public string NetworkName { get; set; }
 
+    public EmbeddedDevice(){}
     public EmbeddedDevice(string id, string name, bool isTurnedOn, string ipAddress, string networkName)
         : base(id, name, isTurnedOn)
     {

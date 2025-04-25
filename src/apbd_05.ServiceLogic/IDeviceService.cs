@@ -6,6 +6,7 @@ namespace APBD_05.ServiceLogic;
 public interface IDeviceService
 {
     IEnumerable<DeviceDto> GetAllDevices();
+    Device GetDeviceById(string id);
     
     bool AddSmartwatch(Smartwatch device);
     bool ModifySmartwatch(string id, Smartwatch device);

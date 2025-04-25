@@ -34,8 +34,8 @@ public class DeviceService : IDeviceService
                     {
                         var deviceRow = new DeviceDto
                         {
-                            DeviceId = reader.GetString(0),
-                            DeviceName = reader.GetString(1),
+                            Id = reader.GetString(0),
+                            Name = reader.GetString(1),
                             IsTurnedOn = reader.GetBoolean(2),
                         };
 
@@ -49,6 +49,100 @@ public class DeviceService : IDeviceService
             }
             return devices;
         }
+    }
+
+    public Device GetDeviceById(string id)
+    {
+        if (id.StartsWith("SW-"))
+        {
+            const string sql = "SELECT d.Id, d.Name, d.IsTurnedOn, s.BatteryPercentage " +
+                               "FROM Smartwatch s INNER JOIN Device d ON s.DeviceId = d.Id WHERE s.DeviceId = @deviceId";
+            
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@DeviceId", id);
+
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new Smartwatch
+                        {
+                            Id = reader.GetString(0),
+                            Name         = reader.GetString(1),
+                            IsTurnedOn   = reader.GetBoolean(2),
+                            BatteryLevel = reader.GetInt32(3)
+                        };
+                    }
+                }
+                
+                throw new InvalidOperationException($"Smartwatch is not found: '{id}'");
+            }
+            
+        }
+
+        if (id.StartsWith("PC-"))
+        {
+            const string sql = "select d.Id, d.Name, d.IsTurnedOn, pc.OperationSystem " + 
+                               " from PersonalComputer pc INNER JOIN Device d ON pc.DeviceID = d.Id" +
+                               " where pc.DeviceId = @deviceId";
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@DeviceId", id);
+
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new PersonalComputer
+                        {
+                            Id = reader.GetString(0),
+                            Name = reader.GetString(1),
+                            IsTurnedOn = reader.GetBoolean(2),
+                            OperationSystem = reader.GetString(3)
+                        };
+                    }
+                }
+
+                throw new InvalidOperationException($"Personal Computer is not found: '{id}'");
+            }
+        }
+
+        if (id.StartsWith("ED-"))
+        {
+            const string sql = "select d.Id, d.Name, d.IsTurnedOn, ed.IpAddress, ed.NetworkName" + 
+                               " from EmbeddedDevice ed INNER JOIN Device d ON ed.DeviceID = d.Id" +
+                               " where ed.DeviceId = @deviceId";
+            
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@deviceId", id);
+
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new EmbeddedDevice()
+                        {
+                            Id = reader.GetString(0),
+                            Name = reader.GetString(1),
+                            IsTurnedOn = reader.GetBoolean(2),
+                            IpAddress = reader.GetString(3),
+                            NetworkName = reader.GetString(4)
+                        };
+                    }
+                }
+
+                throw new InvalidOperationException($"Embedded Device is not found: '{id}'");
+            }
+        }
+        throw new InvalidOperationException($"Device is not found: '{id}'");
     }
     
     public bool AddSmartwatch(Smartwatch device)

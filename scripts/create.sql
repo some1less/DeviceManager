@@ -1,0 +1,37 @@
+DROP TABLE IF EXISTS EmbeddedDevice;
+DROP TABLE IF EXISTS PersonalComputer;
+DROP TABLE IF EXISTS Smartwatch;
+
+DROP TABLE IF EXISTS Device;
+
+CREATE TABLE Device(
+    ID VARCHAR(50) PRIMARY KEY NOT NULL,
+    Name NVARCHAR(100) NOT NULL ,
+    IsTurnedOn bit NOT NULL 
+);
+
+CREATE TABLE Smartwatch(
+    ID INT PRIMARY KEY IDENTITY(1,1),
+    BatteryLevel INT NOT NULL,
+    DeviceId VARCHAR(50) NOT NULL,
+    CONSTRAINT FK_SW_Device
+        FOREIGN KEY (DeviceId) REFERENCES Device(ID)
+);
+
+CREATE TABLE PersonalComputer(
+    ID INT PRIMARY KEY IDENTITY(1,1),
+    OperationSystem VARCHAR(100) NULL,
+    DeviceId VARCHAR(50) NOT NULL,
+    CONSTRAINT FK_PC_Device
+        FOREIGN KEY (DeviceId) REFERENCES Device(ID)
+);
+
+CREATE TABLE EmbeddedDevice(
+    ID INT PRIMARY KEY IDENTITY(1,1),
+    IpAddress VARCHAR(100) NOT NULL,
+    NetworkName VARCHAR(100) NOT NULL,
+    DeviceId VARCHAR(50) NOT NULL,
+    CONSTRAINT FK_ED_Device
+        FOREIGN KEY (DeviceId) REFERENCES Device(ID)
+);
+

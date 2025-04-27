@@ -55,8 +55,9 @@ public class DeviceService : IDeviceService
     {
         if (id.StartsWith("SW-"))
         {
-            const string sql = "SELECT d.Id, d.Name, d.IsTurnedOn, s.BatteryLevel " +
-                               "FROM Smartwatch s INNER JOIN Device d ON s.DeviceId = d.Id WHERE s.DeviceId = @deviceId";
+            const string sql = "@SELECT d.Id, d.Name, d.IsTurnedOn, s.BatteryLevel " +
+                               "FROM Smartwatch s INNER JOIN Device d ON s.DeviceId = d.Id " +
+                               "WHERE s.DeviceId = @deviceId";
             
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -85,9 +86,9 @@ public class DeviceService : IDeviceService
 
         if (id.StartsWith("PC-"))
         {
-            const string sql = "select d.Id, d.Name, d.IsTurnedOn, pc.OperationSystem " + 
-                               " from PersonalComputer pc INNER JOIN Device d ON pc.DeviceID = d.Id" +
-                               " where pc.DeviceId = @deviceId";
+            const string sql = "@select d.Id, d.Name, d.IsTurnedOn, pc.OperationSystem " + 
+                               "from PersonalComputer pc INNER JOIN Device d ON pc.DeviceID = d.Id " +
+                               "where pc.DeviceId = @deviceId";
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 SqlCommand command = new SqlCommand(sql, connection);
@@ -114,9 +115,9 @@ public class DeviceService : IDeviceService
 
         if (id.StartsWith("ED-"))
         {
-            const string sql = "select d.Id, d.Name, d.IsTurnedOn, ed.IpAddress, ed.NetworkName" + 
-                               " from EmbeddedDevice ed INNER JOIN Device d ON ed.DeviceID = d.Id" +
-                               " where ed.DeviceId = @deviceId";
+            const string sql = "@select d.Id, d.Name, d.IsTurnedOn, ed.IpAddress, ed.NetworkName " +
+                               "from EmbeddedDevice ed INNER JOIN Device d ON ed.DeviceID = d.Id " +
+                               "where ed.DeviceId = @deviceId";
             
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -199,11 +200,11 @@ public class DeviceService : IDeviceService
         // I should separate sqls to device and sw
         
         const string deviceSql = "" +
-                                 "UPDATE Device " +
+                                 "@UPDATE Device " +
                                  "SET Name = @Name, IsTurnedOn = @IsTurnedOn " +
                                  "WHERE Id = @Id";
         
-        const string updateString = "UPDATE Smartwatch " + 
+        const string updateString = "@UPDATE Smartwatch " + 
                                     "SET BatteryLevel = @BatteryLevel " + 
                                     "WHERE DeviceId = @Id";
         
@@ -269,12 +270,12 @@ public class DeviceService : IDeviceService
      public bool ModifyPersonalComputer(string id, PersonalComputer device)
      {   
          const string deviceSql = 
-             "UPDATE Device " +
+             "@UPDATE Device " +
              "SET Name = @Name, IsTurnedOn = @IsTurnedOn " +
              "WHERE Id = @Id";
          
          const string pcSql =
-             "UPDATE PersonalComputer " +
+             "@UPDATE PersonalComputer " +
              "SET OperationSystem = @OperationSystem " +
              "WHERE DeviceId = @Id";
 
@@ -341,12 +342,12 @@ public class DeviceService : IDeviceService
      {
          
          const string deviceSql =
-             "UPDATE Device " +
+             "@UPDATE Device " +
              "SET Name = @Name, IsTurnedOn = @IsTurnedOn " +
              "WHERE Id = @Id";
          
          const string edSql =
-             "UPDATE EmbeddedDevice " +
+             "@UPDATE EmbeddedDevice " +
              "SET IpAddress = @IpAddress, NetworkName = @NetworkName " +
              "WHERE DeviceId = @Id";
 

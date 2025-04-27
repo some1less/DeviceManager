@@ -55,7 +55,7 @@ public class DeviceService : IDeviceService
     {
         if (id.StartsWith("SW-"))
         {
-            const string sql = "@SELECT d.Id, d.Name, d.IsTurnedOn, s.BatteryLevel " +
+            const string sql = "@ SELECT d.Id, d.Name, d.IsTurnedOn, s.BatteryLevel " +
                                "FROM Smartwatch s INNER JOIN Device d ON s.DeviceId = d.Id " +
                                "WHERE s.DeviceId = @deviceId";
             
@@ -86,7 +86,7 @@ public class DeviceService : IDeviceService
 
         if (id.StartsWith("PC-"))
         {
-            const string sql = "@select d.Id, d.Name, d.IsTurnedOn, pc.OperationSystem " + 
+            const string sql = "@ select d.Id, d.Name, d.IsTurnedOn, pc.OperationSystem " + 
                                "from PersonalComputer pc INNER JOIN Device d ON pc.DeviceID = d.Id " +
                                "where pc.DeviceId = @deviceId";
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -115,7 +115,7 @@ public class DeviceService : IDeviceService
 
         if (id.StartsWith("ED-"))
         {
-            const string sql = "@select d.Id, d.Name, d.IsTurnedOn, ed.IpAddress, ed.NetworkName " +
+            const string sql = "@ select d.Id, d.Name, d.IsTurnedOn, ed.IpAddress, ed.NetworkName " +
                                "from EmbeddedDevice ed INNER JOIN Device d ON ed.DeviceID = d.Id " +
                                "where ed.DeviceId = @deviceId";
             
@@ -154,8 +154,12 @@ public class DeviceService : IDeviceService
         // so here I have to make only automatic ID creation
         
         // count how many smartwatches already existing
-        const string countSql =
-            "SELECT COUNT(*) FROM Smartwatch";
+        // udp: now to avoid error while creating new sw after deleting sw4
+        // maxSql implemented 
+        const string maxSql =
+            "SELECT MAX(CONVERT(INT, SUBSTRING(Id, 4, Len(Id)-3))) " + 
+            "FROM Device " +
+            "WHERE Id like 'SW-%'";
         
         const string insertDevice =
             "INSERT INTO Device (Id, Name, IsTurnedOn) VALUES (@Id, @name, @isTurnedOn)";
@@ -174,10 +178,10 @@ public class DeviceService : IDeviceService
         {
             connection.Open();
             
-            SqlCommand command = new SqlCommand(countSql, connection);
-            int count = (int)command.ExecuteScalar()!;
+            SqlCommand command = new SqlCommand(maxSql, connection);
+            int maxVal = (int)command.ExecuteScalar()!;
             
-            var newId = $"SW-{ count + 1 }";
+            var newId = $"SW-{ maxVal + 1 }";
             device.Id = newId;
             
             SqlCommand command1 = new SqlCommand(insertDevice, connection);
@@ -233,8 +237,10 @@ public class DeviceService : IDeviceService
     
      public bool AddPersonalComputer(PersonalComputer device)
      {
-         const string countSql =
-             "SELECT COUNT(*) FROM Smartwatch";
+         const string maxSql =
+             "SELECT MAX(CONVERT(INT, SUBSTRING(Id, 4, Len(Id)-3))) " + 
+             "FROM Device " +
+             "WHERE Id like 'PC-%'";
          
          const string deviceSql =
          "INSERT INTO Device (Id, Name, IsTurnedOn) VALUES (@Id, @Name, @IsTurnedOn)";
@@ -247,10 +253,10 @@ public class DeviceService : IDeviceService
          {
              connection.Open();
             
-             SqlCommand command = new SqlCommand(countSql, connection);
-             int count = (int)command.ExecuteScalar()!;
+             SqlCommand command = new SqlCommand(maxSql, connection);
+             int maxVal = (int)command.ExecuteScalar()!;
             
-             var newId = $"PC-{ count + 1 }";
+             var newId = $"PC-{ maxVal + 1 }";
              device.Id = newId;
             
              SqlCommand command1 = new SqlCommand(deviceSql, connection);
@@ -270,12 +276,12 @@ public class DeviceService : IDeviceService
      public bool ModifyPersonalComputer(string id, PersonalComputer device)
      {   
          const string deviceSql = 
-             "@UPDATE Device " +
+             "UPDATE Device " +
              "SET Name = @Name, IsTurnedOn = @IsTurnedOn " +
              "WHERE Id = @Id";
          
          const string pcSql =
-             "@UPDATE PersonalComputer " +
+             "UPDATE PersonalComputer " +
              "SET OperationSystem = @OperationSystem " +
              "WHERE DeviceId = @Id";
 
@@ -302,8 +308,10 @@ public class DeviceService : IDeviceService
     public bool AddEmbeddedDevice(EmbeddedDevice device)
     {
         
-        const string countSql =
-            "SELECT COUNT(*) FROM EmbeddedDevice";
+        const string maxSql =
+            "SELECT MAX(CONVERT(INT, SUBSTRING(Id, 4, Len(Id)-3))) " + 
+            "FROM Device " +
+            "WHERE Id like 'ED-%'";
         
         const string deviceSql =
             "INSERT INTO Device (Id, Name, IsTurnedOn) VALUES (@Id, @Name, @IsTurnedOn)";
@@ -317,7 +325,7 @@ public class DeviceService : IDeviceService
         {
             connection.Open();
                 
-            SqlCommand command = new SqlCommand(countSql, connection);
+            SqlCommand command = new SqlCommand(maxSql, connection);
             int count = (int)command.ExecuteScalar()!;
                 
             var newId = $"ED-{ count + 1 }";
@@ -342,12 +350,12 @@ public class DeviceService : IDeviceService
      {
          
          const string deviceSql =
-             "@UPDATE Device " +
+             "UPDATE Device " +
              "SET Name = @Name, IsTurnedOn = @IsTurnedOn " +
              "WHERE Id = @Id";
          
          const string edSql =
-             "@UPDATE EmbeddedDevice " +
+             "UPDATE EmbeddedDevice " +
              "SET IpAddress = @IpAddress, NetworkName = @NetworkName " +
              "WHERE DeviceId = @Id";
 
@@ -374,16 +382,39 @@ public class DeviceService : IDeviceService
 
     public bool RemoveDevice(string id)
     {
-        const string deleteString = "DELETE FROM Device WHERE Id = @Id";
+        
+        string kidSql;
+        if (id.StartsWith("SW-"))
+        {
+            kidSql = "DELETE FROM Smartwatch WHERE DeviceID = @Id";
+        } else if (id.StartsWith("PC-"))
+        {
+            kidSql = "DELETE FROM PersonalComputer WHERE DeviceId = @Id";
+        }
+        else
+        {
+            kidSql = "DELETE FROM EmbeddedDevice WHERE DeviceID = @Id";
+        }
 
+        const string deviceSql = "DELETE FROM Device WHERE Id = @Id"; 
+
+        
         int rowsAffected = 0;
         using (var connection = new SqlConnection(_connectionString))
         {
-            var command = new SqlCommand(deleteString, connection);
-            command.Parameters.AddWithValue("@Id", id);
-
             connection.Open();
-            rowsAffected = command.ExecuteNonQuery();
+
+            using (var cmdChild = new SqlCommand(kidSql, connection))
+            {
+                           cmdChild.Parameters.AddWithValue("@Id", id);
+                           rowsAffected += cmdChild.ExecuteNonQuery();
+            }
+            
+            using (var cmdDev = new SqlCommand(deviceSql, connection))
+            {
+                cmdDev.Parameters.AddWithValue("@Id", id);
+                rowsAffected += cmdDev.ExecuteNonQuery();
+            }
         }
         return rowsAffected != -1;
     }

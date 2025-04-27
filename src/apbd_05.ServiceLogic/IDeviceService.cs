@@ -11,11 +11,11 @@ public interface IDeviceService
     bool AddSmartwatch(Smartwatch device);
     bool ModifySmartwatch(string id, Smartwatch device);
     
-    /*bool AddPersonalComputer(DeviceDto device);
-    bool ModifyPersonalComputer(string id, DeviceDto device);
+    bool AddPersonalComputer(PersonalComputer device);
+    bool ModifyPersonalComputer(string id, PersonalComputer device);
     
-    bool AddEmbeddedDevice(DeviceDto device);
-    bool ModifyEmbeddedDevice(string id, DeviceDto device);*/
+    bool AddEmbeddedDevice(EmbeddedDevice device);
+    bool ModifyEmbeddedDevice(string id, EmbeddedDevice device);
     
     bool RemoveDevice(string id);
 }

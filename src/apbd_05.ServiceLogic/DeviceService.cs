@@ -55,7 +55,7 @@ public class DeviceService : IDeviceService
     {
         if (id.StartsWith("SW-"))
         {
-            const string sql = "SELECT d.Id, d.Name, d.IsTurnedOn, s.BatteryPercentage " +
+            const string sql = "SELECT d.Id, d.Name, d.IsTurnedOn, s.BatteryLevel " +
                                "FROM Smartwatch s INNER JOIN Device d ON s.DeviceId = d.Id WHERE s.DeviceId = @deviceId";
             
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -147,21 +147,48 @@ public class DeviceService : IDeviceService
     
     public bool AddSmartwatch(Smartwatch device)
     {
-        const string insertString =
-            "INSERT INTO Smartwatches (Id, Name, IsTurnedOn, BatteryLevel) VALUES (@Id, @Name, @IsTurnedOn, @BatteryLevel)";
+        // it was said that user can't provide id
+        // so while creating user will specify name, ...  and DEVICE TYPE
+        // finally in deserialization it will found addSmartwatch option - OK
+        // so here I have to make only automatic ID creation
+        
+        // count how many smartwatches already existing
+        const string countSql =
+            "SELECT COUNT(*) FROM Smartwatch";
+        
+        const string insertDevice =
+            "INSERT INTO Device (Id, Name, IsTurnedOn) VALUES (@Id, @name, @isTurnedOn)";
+        const string insertSw =
+            "INSERT INTO Smartwatch (DeviceId, BatteryLevel) VALUES (@DeviceId, @BatteryLevel)";
+        
+        /*{
+            "Name": "hello",
+            "IsTurnedOn": true,
+            "deviceType": "smartwatch",
+            "BatteryLevel": 80
+        }*/
         
         int rowsAffected = 0;
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
-            SqlCommand command = new SqlCommand(insertString, connection);
-            command.Parameters.AddWithValue("@Id", device.Id);
-            command.Parameters.AddWithValue("@Name", device.Name);
-            command.Parameters.AddWithValue("@IsTurnedOn", device.IsTurnedOn);
-            command.Parameters.AddWithValue("@BatteryLevel", device.BatteryLevel);
-            
             connection.Open();
             
-            rowsAffected = command.ExecuteNonQuery();
+            SqlCommand command = new SqlCommand(countSql, connection);
+            int count = (int)command.ExecuteScalar()!;
+            
+            var newId = $"SW-{ count + 1 }";
+            device.Id = newId;
+            
+            SqlCommand command1 = new SqlCommand(insertDevice, connection);
+            command1.Parameters.AddWithValue("@Id", device.Id);
+            command1.Parameters.AddWithValue("@Name", device.Name);
+            command1.Parameters.AddWithValue("@IsTurnedOn", device.IsTurnedOn);
+            rowsAffected += command1.ExecuteNonQuery();
+            
+            SqlCommand command2 = new SqlCommand(insertSw, connection);
+            command2.Parameters.AddWithValue("@DeviceId", device.Id);
+            command2.Parameters.AddWithValue("@BatteryLevel", device.BatteryLevel);
+            rowsAffected += command2.ExecuteNonQuery();
         }
         
         return rowsAffected != -1;
@@ -169,118 +196,184 @@ public class DeviceService : IDeviceService
     }
     public bool ModifySmartwatch(string id, Smartwatch device)
     {
-        const string updateString = "UPDATE Smartwatches " + 
-                                    "SET Name = @Name, IsTurnedOn = @IsTurnedOn, BatteryLevel = @BatteryLevel " + 
-                                    "WHERE Id = @Id";
+        // I should separate sqls to device and sw
+        
+        const string deviceSql = "" +
+                                 "UPDATE Device " +
+                                 "SET Name = @Name, IsTurnedOn = @IsTurnedOn " +
+                                 "WHERE Id = @Id";
+        
+        const string updateString = "UPDATE Smartwatch " + 
+                                    "SET BatteryLevel = @BatteryLevel " + 
+                                    "WHERE DeviceId = @Id";
         
         int rowsAffected = 0;
 
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
-            SqlCommand command = new SqlCommand(updateString, connection);
+            connection.Open();
+            
+            SqlCommand command = new SqlCommand(deviceSql, connection);
             command.Parameters.AddWithValue("@Id", id);
             command.Parameters.AddWithValue("@Name", device.Name);
             command.Parameters.AddWithValue("@IsTurnedOn", device.IsTurnedOn);
-            command.Parameters.AddWithValue("@BatteryLevel", device.BatteryLevel);
+            rowsAffected += command.ExecuteNonQuery();
+
             
-            connection.Open();
-            rowsAffected = command.ExecuteNonQuery();
+            SqlCommand command1 = new SqlCommand(updateString, connection);
+            command1.Parameters.AddWithValue("@Id", id);
+            command1.Parameters.AddWithValue("@BatteryLevel", device.BatteryLevel);
+            rowsAffected += command1.ExecuteNonQuery();
+            
         }
         
         return rowsAffected != -1;
     }
     
-    public bool AddPersonalComputer(PersonalComputer device)
-    {
-        const string insertString =
-        "INSERT INTO PersonalComputers (Id, Name, IsTurnedOn, OperatingSystem) " +
-        "VALUES (@Id, @Name, @IsTurnedOn, @OperatingSystem)";
+     public bool AddPersonalComputer(PersonalComputer device)
+     {
+         const string countSql =
+             "SELECT COUNT(*) FROM Smartwatch";
+         
+         const string deviceSql =
+         "INSERT INTO Device (Id, Name, IsTurnedOn) VALUES (@Id, @Name, @IsTurnedOn)";
+         
+         const string pcSql =
+             "INSERT INTO PersonalComputer (DeviceId, OperationSystem) VALUES (@DeviceId, @OperationSystem)";
 
-        int rowsAffected = 0;
-        using (var connection = new SqlConnection(_connectionString)) 
-        {
-            var command = new SqlCommand(insertString, connection);
-            command.Parameters.AddWithValue("@Id", device.Id);
-            command.Parameters.AddWithValue("@Name", device.Name);
-            command.Parameters.AddWithValue("@IsTurnedOn", device.IsTurnedOn);
-            command.Parameters.AddWithValue("@OperatingSystem", device.OperationSystem);
+         int rowsAffected = 0;
+         using (var connection = new SqlConnection(_connectionString)) 
+         {
+             connection.Open();
+            
+             SqlCommand command = new SqlCommand(countSql, connection);
+             int count = (int)command.ExecuteScalar()!;
+            
+             var newId = $"PC-{ count + 1 }";
+             device.Id = newId;
+            
+             SqlCommand command1 = new SqlCommand(deviceSql, connection);
+             command1.Parameters.AddWithValue("@Id", device.Id);
+             command1.Parameters.AddWithValue("@Name", device.Name);
+             command1.Parameters.AddWithValue("@IsTurnedOn", device.IsTurnedOn);
+             rowsAffected += command1.ExecuteNonQuery();
+            
+             SqlCommand command2 = new SqlCommand(pcSql, connection);
+             command2.Parameters.AddWithValue("@DeviceId", device.Id);
+             command2.Parameters.AddWithValue("@OperationSystem", device.OperationSystem);
+             rowsAffected += command2.ExecuteNonQuery();
+         }
+         return rowsAffected != -1;
+     }
 
-        connection.Open();
-        rowsAffected = command.ExecuteNonQuery();
-        }
-        return rowsAffected != -1;
-    }
+     public bool ModifyPersonalComputer(string id, PersonalComputer device)
+     {   
+         const string deviceSql = 
+             "UPDATE Device " +
+             "SET Name = @Name, IsTurnedOn = @IsTurnedOn " +
+             "WHERE Id = @Id";
+         
+         const string pcSql =
+             "UPDATE PersonalComputer " +
+             "SET OperationSystem = @OperationSystem " +
+             "WHERE DeviceId = @Id";
 
-    public bool ModifyPersonalComputer(string id, PersonalComputer device)
-    {   
-        const string updateString =
-            "UPDATE PersonalComputers " +
-            "SET Name = @Name, IsTurnedOn = @IsTurnedOn, OperatingSystem = @OperatingSystem " +
-            "WHERE Id = @Id";
+         int rowsAffected = 0;
+         using (var connection = new SqlConnection(_connectionString))
+         {
+             connection.Open();
+            
+             SqlCommand command = new SqlCommand(deviceSql, connection);
+             command.Parameters.AddWithValue("@Id", id);
+             command.Parameters.AddWithValue("@Name", device.Name);
+             command.Parameters.AddWithValue("@IsTurnedOn", device.IsTurnedOn);
+             rowsAffected += command.ExecuteNonQuery();
 
-        int rowsAffected = 0;
-        using (var connection = new SqlConnection(_connectionString))
-        {
-            var command = new SqlCommand(updateString, connection);
-            command.Parameters.AddWithValue("@Id", id);
-            command.Parameters.AddWithValue("@Name", device.Name);
-            command.Parameters.AddWithValue("@IsTurnedOn", device.IsTurnedOn);
-            command.Parameters.AddWithValue("@OperatingSystem", device.OperationSystem);
-
-            connection.Open();
-            rowsAffected = command.ExecuteNonQuery();
-        }
-        return rowsAffected != -1;
-    }
+            
+             SqlCommand command1 = new SqlCommand(pcSql, connection);
+             command1.Parameters.AddWithValue("@Id", id);
+             command1.Parameters.AddWithValue("@OperationSystem", device.OperationSystem);
+             rowsAffected += command1.ExecuteNonQuery();
+         }
+         return rowsAffected != -1;
+     }
 
     public bool AddEmbeddedDevice(EmbeddedDevice device)
     {
-        const string insertString =
-            "INSERT INTO EmbeddedDevices (Id, Name, IsTurnedOn, IpAddress, NetworkName) " +
-            "VALUES (@Id, @Name, @IsTurnedOn, @IpAddress, @NetworkName)";
-
-    int rowsAffected = 0;
-    using (var connection = new SqlConnection(_connectionString))
-    {
-        var command = new SqlCommand(insertString, connection);
-        command.Parameters.AddWithValue("@Id", device.Id);
-        command.Parameters.AddWithValue("@Name", device.Name);
-        command.Parameters.AddWithValue("@IsTurnedOn", device.IsTurnedOn);
-        command.Parameters.AddWithValue("@IpAddress", device.IpAddress);
-        command.Parameters.AddWithValue("@NetworkName", device.NetworkName);
-
-        connection.Open();
-        rowsAffected = command.ExecuteNonQuery();
-    }
-    return rowsAffected != -1;
-}
-
-    public bool ModifyEmbeddedDevice(string id, EmbeddedDevice device)
-    {
-        const string updateString =
-            "UPDATE EmbeddedDevices " +
-            "SET Name = @Name, IsTurnedOn = @IsTurnedOn, IpAddress = @IpAddress, NetworkName = @NetworkName " +
-            "WHERE Id = @Id";
+        
+        const string countSql =
+            "SELECT COUNT(*) FROM EmbeddedDevice";
+        
+        const string deviceSql =
+            "INSERT INTO Device (Id, Name, IsTurnedOn) VALUES (@Id, @Name, @IsTurnedOn)";
+        
+        const string edSql =
+            "INSERT INTO EmbeddedDevice (DeviceId, IpAddress, NetworkName) " +
+            "VALUES (@DeviceId, @IpAddress, @NetworkName)";
 
         int rowsAffected = 0;
         using (var connection = new SqlConnection(_connectionString))
         {
-            var command = new SqlCommand(updateString, connection);
-            command.Parameters.AddWithValue("@Id", id);
-            command.Parameters.AddWithValue("@Name", device.Name);
-            command.Parameters.AddWithValue("@IsTurnedOn", device.IsTurnedOn);
-            command.Parameters.AddWithValue("@IpAddress", device.IpAddress);
-            command.Parameters.AddWithValue("@NetworkName", device.NetworkName);
-
             connection.Open();
-            rowsAffected = command.ExecuteNonQuery();
+                
+            SqlCommand command = new SqlCommand(countSql, connection);
+            int count = (int)command.ExecuteScalar()!;
+                
+            var newId = $"ED-{ count + 1 }";
+            device.Id = newId;
+                
+            SqlCommand command1 = new SqlCommand(deviceSql, connection);
+            command1.Parameters.AddWithValue("@Id", device.Id);
+            command1.Parameters.AddWithValue("@Name", device.Name);
+            command1.Parameters.AddWithValue("@IsTurnedOn", device.IsTurnedOn);
+            rowsAffected += command1.ExecuteNonQuery();
+                
+            SqlCommand command2 = new SqlCommand(edSql, connection);
+            command2.Parameters.AddWithValue("@DeviceId", device.Id);
+            command2.Parameters.AddWithValue("@IpAddress", device.IpAddress);
+            command2.Parameters.AddWithValue("@NetworkName", device.NetworkName);
+            rowsAffected += command2.ExecuteNonQuery();
         }
-        return rowsAffected != -1;
+        return rowsAffected != -1; 
     }
+
+     public bool ModifyEmbeddedDevice(string id, EmbeddedDevice device)
+     {
+         
+         const string deviceSql =
+             "UPDATE Device " +
+             "SET Name = @Name, IsTurnedOn = @IsTurnedOn " +
+             "WHERE Id = @Id";
+         
+         const string edSql =
+             "UPDATE EmbeddedDevice " +
+             "SET IpAddress = @IpAddress, NetworkName = @NetworkName " +
+             "WHERE DeviceId = @Id";
+
+         int rowsAffected = 0;
+         using (var connection = new SqlConnection(_connectionString))
+         {
+             connection.Open();
+            
+             SqlCommand command = new SqlCommand(deviceSql, connection);
+             command.Parameters.AddWithValue("@Id", id);
+             command.Parameters.AddWithValue("@Name", device.Name);
+             command.Parameters.AddWithValue("@IsTurnedOn", device.IsTurnedOn);
+             rowsAffected += command.ExecuteNonQuery();
+
+            
+             SqlCommand command1 = new SqlCommand(edSql, connection);
+             command1.Parameters.AddWithValue("@Id", id);
+             command1.Parameters.AddWithValue("@IpAddress", device.IpAddress);
+             command1.Parameters.AddWithValue("@NetworkName", device.NetworkName);
+             rowsAffected += command1.ExecuteNonQuery();
+         }
+         return rowsAffected != -1;
+     }
 
     public bool RemoveDevice(string id)
     {
-        const string deleteString = "DELETE FROM Devices WHERE Id = @Id";
+        const string deleteString = "DELETE FROM Device WHERE Id = @Id";
 
         int rowsAffected = 0;
         using (var connection = new SqlConnection(_connectionString))

@@ -1,4 +1,4 @@
-namespace apbd_05.ServiceLogic;
+namespace DTOs;
 
 public class DeviceDto
 {

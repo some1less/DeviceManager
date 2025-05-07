@@ -1,9 +1,9 @@
 using DTOs;
 using Models;
 
-namespace APBD_05.ServiceLogic;
+namespace Infrastructure;
 
-public interface IDeviceService
+public interface IDeviceRepository
 {
     IEnumerable<DeviceDto> GetAllDevices();
     Device GetDeviceById(string id);

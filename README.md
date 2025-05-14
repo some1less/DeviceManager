@@ -1,6 +1,7 @@
 Es gibt keine Landstraße für die Wissenschaft, und nur diejenigen haben Aussicht, ihre lichten Höhen zu erreichen, die die Mühe nicht scheuen, ihre steilen Pfade zu erklimmen!
 
-Appsettings file:
+
+```Appsettings file:
 {
   "Logging": {
     "LogLevel": {
@@ -13,3 +14,4 @@ Appsettings file:
     "DeviceDatabase": >> put your connection string here <<
   }
 }
+```

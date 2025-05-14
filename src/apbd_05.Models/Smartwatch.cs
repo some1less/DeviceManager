@@ -5,10 +5,11 @@ public class Smartwatch : Device
     private int _batteryLevel;
 
     public int BatteryLevel { get; set; }
+    public byte[] SwRowVersion { get; set; }
 
     public Smartwatch(){}
-    public Smartwatch(string id, string name, bool isTurnedOn, int batteryLevel)
-        : base(id, name, isTurnedOn)
+    public Smartwatch(string id, string name, bool isTurnedOn, byte[] originalVersion, int batteryLevel)
+        : base(id, name, isTurnedOn, originalVersion)
     {
         BatteryLevel = batteryLevel;
     }

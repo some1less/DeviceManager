@@ -7,7 +7,8 @@ DROP TABLE IF EXISTS Device;
 CREATE TABLE Device(
     ID VARCHAR(50) PRIMARY KEY NOT NULL,
     Name NVARCHAR(100) NOT NULL ,
-    IsTurnedOn bit NOT NULL 
+    IsTurnedOn bit NOT NULL,
+    DeviceRowVersion ROWVERSION NOT NULL
 );
 
 CREATE TABLE Smartwatch(
@@ -18,6 +19,8 @@ CREATE TABLE Smartwatch(
         FOREIGN KEY (DeviceId) REFERENCES Device(ID)
 );
 
+ALTER TABLE Smartwatch ADD RowVersion ROWVERSION;
+
 CREATE TABLE PersonalComputer(
     ID INT PRIMARY KEY IDENTITY(1,1),
     OperationSystem VARCHAR(100) NULL,
@@ -25,6 +28,8 @@ CREATE TABLE PersonalComputer(
     CONSTRAINT FK_PC_Device
         FOREIGN KEY (DeviceId) REFERENCES Device(ID)
 );
+
+ALTER TABLE PersonalComputer ADD RowVersion ROWVERSION;
 
 CREATE TABLE EmbeddedDevice(
     ID INT PRIMARY KEY IDENTITY(1,1),
@@ -34,4 +39,7 @@ CREATE TABLE EmbeddedDevice(
     CONSTRAINT FK_ED_Device
         FOREIGN KEY (DeviceId) REFERENCES Device(ID)
 );
+
+ALTER TABLE EmbeddedDevice ADD RowVersion ROWVERSION;
+
 

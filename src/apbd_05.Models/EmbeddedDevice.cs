@@ -5,6 +5,8 @@ namespace Models;
 public class EmbeddedDevice : Device
 {
     private string _ipAddress;
+    public byte[] EdRowVersion { get; set; }
+
     public string IpAddress
     {
         get { return _ipAddress; }
@@ -19,8 +21,8 @@ public class EmbeddedDevice : Device
     public string NetworkName { get; set; }
 
     public EmbeddedDevice(){}
-    public EmbeddedDevice(string id, string name, bool isTurnedOn, string ipAddress, string networkName)
-        : base(id, name, isTurnedOn)
+    public EmbeddedDevice(string id, string name, bool isTurnedOn, byte[] originalVersion, string ipAddress, string networkName)
+        : base(id, name, isTurnedOn, originalVersion)
     {
         IpAddress = ipAddress;
         NetworkName = networkName;

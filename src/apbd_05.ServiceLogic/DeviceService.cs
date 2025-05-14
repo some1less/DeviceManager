@@ -25,42 +25,40 @@ public class DeviceService : IDeviceService
         return device;
     }
     
-    public bool AddSmartwatch(Smartwatch device)
+    public void AddSmartwatch(Smartwatch device)
     {
-        var result = _deviceRepository.AddSmartwatch(device);
+        _deviceRepository.AddSmartwatch(device);
+    }
+    
+    public void AddPersonalComputer(PersonalComputer device)
+    { 
+        _deviceRepository.AddPersonalComputer(device);
+    }
+    
+    public void AddEmbeddedDevice(EmbeddedDevice device)
+    {
+        _deviceRepository.AddEmbeddedDevice(device);
+    }
+    
+    public Task<bool> ModifySmartwatch(Smartwatch sw)
+    {
+        var result = _deviceRepository.ModifySmartwatch(sw);
         return result;
     }
-    public bool ModifySmartwatch(string id, Smartwatch device)
+
+    public Task<bool> ModifyPersonalComputer(PersonalComputer pc)
     {
-        var result = _deviceRepository.ModifySmartwatch(id, device);
+        var result = _deviceRepository.ModifyPersonalComputer(pc);
         return result;
     }
     
-     public bool AddPersonalComputer(PersonalComputer device)
+    public Task<bool> ModifyEmbeddedDevice(EmbeddedDevice ed)
      {
-         var result = _deviceRepository.AddPersonalComputer(device);
+         var result = _deviceRepository.ModifyEmbeddedDevice(ed);
          return result;
      }
-
-     public bool ModifyPersonalComputer(string id, PersonalComputer device)
-     {   
-         var result = _deviceRepository.ModifyPersonalComputer(id, device);
-         return result;
-     }
-
-    public bool AddEmbeddedDevice(EmbeddedDevice device)
-    {
-        var result = _deviceRepository.AddEmbeddedDevice(device);
-        return result;
-    }
-
-     public bool ModifyEmbeddedDevice(string id, EmbeddedDevice device)
-     {
-         var result = _deviceRepository.ModifyEmbeddedDevice(id, device);
-         return result;
-     }
-
-    public bool RemoveDevice(string id)
+    
+    public Task<bool> RemoveDevice(string id)
     {
         var result = _deviceRepository.RemoveDevice(id);
         return result;

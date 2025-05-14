@@ -8,14 +8,13 @@ public interface IDeviceRepository
     IEnumerable<DeviceDto> GetAllDevices();
     Device GetDeviceById(string id);
     
-    bool AddSmartwatch(Smartwatch device);
-    bool ModifySmartwatch(string id, Smartwatch device);
+    void AddSmartwatch(Smartwatch device);
+    void AddPersonalComputer(PersonalComputer device);
+    void AddEmbeddedDevice(EmbeddedDevice device);
+    Task<bool> ModifySmartwatch(Smartwatch device);
+
+    Task<bool> ModifyPersonalComputer(PersonalComputer device);
+    Task<bool> ModifyEmbeddedDevice(EmbeddedDevice device);
     
-    bool AddPersonalComputer(PersonalComputer device);
-    bool ModifyPersonalComputer(string id, PersonalComputer device);
-    
-    bool AddEmbeddedDevice(EmbeddedDevice device);
-    bool ModifyEmbeddedDevice(string id, EmbeddedDevice device);
-    
-    bool RemoveDevice(string id);
+    Task<bool> RemoveDevice(string id);
 }

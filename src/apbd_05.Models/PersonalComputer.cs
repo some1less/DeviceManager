@@ -3,10 +3,12 @@
 public class PersonalComputer : Device
 {
     public string? OperationSystem { get; set; }
+    public byte[] PcRowVersion { get; set; }
+
 
     public PersonalComputer(){}
-    public PersonalComputer(string id, string name, bool isTurnedOn, string operationSystem)
-        : base(id, name, isTurnedOn)
+    public PersonalComputer(string id, string name, bool isTurnedOn, byte[] originalVersion, string operationSystem)
+        : base(id, name, isTurnedOn, originalVersion)
     {
         if (string.IsNullOrEmpty(operationSystem) && isTurnedOn)
             throw new Exception("EmptySystemException");

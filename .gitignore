@@ -485,3 +485,5 @@ $RECYCLE.BIN/
 
 # Remove config file
 appsettings.*
+
+*.sql

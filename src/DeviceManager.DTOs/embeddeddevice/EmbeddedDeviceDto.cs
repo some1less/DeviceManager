@@ -1,4 +1,4 @@
-namespace DTOs.embeddeddevice;
+namespace DeviceManager.DTOs.embeddeddevice;
 
 public class EmbeddedDeviceDto
 {

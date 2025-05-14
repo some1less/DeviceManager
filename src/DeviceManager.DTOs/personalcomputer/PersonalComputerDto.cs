@@ -1,4 +1,4 @@
-namespace DTOs.personalcomputer;
+namespace DeviceManager.DTOs.personalcomputer;
 
 public class PersonalComputerDto
 {

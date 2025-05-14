@@ -1,7 +1,6 @@
-using DTOs;
 using Models;
 
-namespace Infrastructure;
+namespace DeviceManager.Infrastructure;
 
 public interface IDeviceRepository
 {

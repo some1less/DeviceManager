@@ -1,9 +1,9 @@
-namespace DTOs;
+namespace DeviceManager.DTOs;
 
-public class SmartwatchDto
+public class DeviceDto
 {
     public string Id { get; set; }
     public string Name { get; set; }
     public bool IsTurnedOn { get; set; }
-    public int BatteryLevel { get; set; }
+    
 }

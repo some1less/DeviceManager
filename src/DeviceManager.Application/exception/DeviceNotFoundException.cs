@@ -1,4 +1,4 @@
-namespace apbd_05.ServiceLogic.exception;
+namespace DeviceManager.Application.exception;
 
 public class DeviceNotFoundException : Exception
 {

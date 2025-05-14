@@ -1,9 +1,9 @@
-using DTOs;
-using DTOs.embeddeddevice;
-using DTOs.personalcomputer;
+using DeviceManager.DTOs;
+using DeviceManager.DTOs.embeddeddevice;
+using DeviceManager.DTOs.personalcomputer;
 using Models;
 
-namespace APBD_05.ServiceLogic;
+namespace DeviceManager.Application;
 
 public interface IDeviceService
 {

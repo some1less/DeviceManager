@@ -1,14 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apbd_05.Web", "src\apbd_05.Web\Web.csproj", "{461373FE-1BD9-482A-8538-5F5F7C7D3371}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManager.Web", "src\DeviceManager.Web\DeviceManager.Web.csproj", "{461373FE-1BD9-482A-8538-5F5F7C7D3371}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apbd_05.Models", "src\apbd_05.Models\Models.csproj", "{FDAA6BA4-AAB3-4FAF-B06E-1AA4042310F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManager.Models", "src\DeviceManager.Models\DeviceManager.Models.csproj", "{FDAA6BA4-AAB3-4FAF-B06E-1AA4042310F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apbd_05.ServiceLogic", "src\apbd_05.ServiceLogic\apbd_05.ServiceLogic.csproj", "{250DEC26-3D9F-4FB8-ADE9-84FD221D0458}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManager.Application", "src\DeviceManager.Application\DeviceManager.Application.csproj", "{250DEC26-3D9F-4FB8-ADE9-84FD221D0458}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{C22B12CA-DFDF-4042-9B1D-7214B8BA856C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManager.Infrastructure", "src\DeviceManager.Infrastructure\DeviceManager.Infrastructure.csproj", "{C22B12CA-DFDF-4042-9B1D-7214B8BA856C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTOs", "src\DTOs\DTOs.csproj", "{5D87C784-DAC0-46A6-BE13-3DF13A2C64F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManager.DTOs", "src\DeviceManager.DTOs\DeviceManager.DTOs.csproj", "{5D87C784-DAC0-46A6-BE13-3DF13A2C64F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

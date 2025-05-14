@@ -1,8 +1,8 @@
-using APBD_05.ServiceLogic;
-using DTOs;
-using DTOs.embeddeddevice;
-using DTOs.personalcomputer;
-using Infrastructure;
+using DeviceManager.Application;
+using DeviceManager.DTOs;
+using DeviceManager.DTOs.embeddeddevice;
+using DeviceManager.DTOs.personalcomputer;
+using DeviceManager.Infrastructure;
 using Models;
 
 namespace APBD_05.service;

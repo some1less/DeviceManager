@@ -1,9 +1,8 @@
 ﻿using System.Data;
-using DTOs;
 using Microsoft.Data.SqlClient;
 using Models;
 
-namespace Infrastructure;
+namespace DeviceManager.Infrastructure;
 
 public class DeviceRepository : IDeviceRepository
 {

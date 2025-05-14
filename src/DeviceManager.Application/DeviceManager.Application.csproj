@@ -7,12 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\apbd_05.Models\Models.csproj" />
+      <ProjectReference Include="..\DeviceManager.Models\DeviceManager.Models.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\DTOs\DTOs.csproj" />
-        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+        <ProjectReference Include="..\DeviceManager.DTOs\DeviceManager.DTOs.csproj" />
+        <ProjectReference Include="..\DeviceManager.Infrastructure\DeviceManager.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

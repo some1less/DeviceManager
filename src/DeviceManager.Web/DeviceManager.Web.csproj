@@ -14,8 +14,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\apbd_05.ServiceLogic\apbd_05.ServiceLogic.csproj" />
-      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+      <ProjectReference Include="..\DeviceManager.Application\DeviceManager.Application.csproj" />
+      <ProjectReference Include="..\DeviceManager.Infrastructure\DeviceManager.Infrastructure.csproj" />
+      <ProjectReference Include="..\DeviceManager.Models\DeviceManager.Models.csproj" />
     </ItemGroup>
 
 </Project>

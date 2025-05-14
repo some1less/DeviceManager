@@ -5,7 +5,7 @@ using DeviceManager.DTOs.personalcomputer;
 using DeviceManager.Infrastructure;
 using Models;
 
-namespace APBD_05.service;
+namespace DeviceManager.Applicatio;
 
 public class DeviceService : IDeviceService
 { 

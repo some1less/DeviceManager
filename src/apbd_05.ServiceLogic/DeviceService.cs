@@ -17,8 +17,22 @@ public class DeviceService : IDeviceService
 
     public IEnumerable<DeviceDto> GetAllDevices()
     {
+        
         var devices = _deviceRepository.GetAllDevices();
-        return devices;
+        List<DeviceDto> devicesDto = [];
+        
+        foreach (var device in devices)
+        {
+            var deviceDto = new DeviceDto
+            {
+                Id = device.Id,
+                Name = device.Name,
+                IsTurnedOn = device.IsTurnedOn
+            };
+            
+            devicesDto.Add(deviceDto);
+        }
+        return devicesDto;
     }
 
     public Device GetDeviceById(string id)

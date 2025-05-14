@@ -5,7 +5,7 @@ namespace Infrastructure;
 
 public interface IDeviceRepository
 {
-    IEnumerable<DeviceDto> GetAllDevices();
+    IEnumerable<Device> GetAllDevices();
     Device GetDeviceById(string id);
     
     string AddSmartwatch(Smartwatch device);

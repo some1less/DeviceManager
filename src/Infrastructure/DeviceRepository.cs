@@ -15,10 +15,10 @@ public class DeviceRepository : IDeviceRepository
         _connectionString = connectionString;
     }
     
-    public IEnumerable<DeviceDto> GetAllDevices()
+    public IEnumerable<Device> GetAllDevices()
     {
         
-        List<DeviceDto> devices = [];
+        List<Device> devices = [];
         
         const string sql = "select * from device";
 
@@ -34,7 +34,7 @@ public class DeviceRepository : IDeviceRepository
                 {
                     while (reader.Read())
                     {
-                        var deviceRow = new DeviceDto
+                        var deviceRow = new Device
                         {
                             Id = reader.GetString(0),
                             Name = reader.GetString(1),

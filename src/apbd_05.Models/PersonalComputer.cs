@@ -15,7 +15,7 @@ public class PersonalComputer : Device
         OperationSystem = operationSystem;
     }
 
-    public override void TurnMode()
+    public void TurnMode()
     {
         if (IsTurnedOn)
         {
@@ -30,7 +30,7 @@ public class PersonalComputer : Device
         }
     }
 
-    public override object GetInfo()
+    public object GetInfo()
     {
         return new
         {

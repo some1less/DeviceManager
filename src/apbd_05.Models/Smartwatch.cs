@@ -15,7 +15,7 @@ public class Smartwatch : Device
     }
     
 
-    public override void TurnMode()
+    public void TurnMode()
     {
         if (IsTurnedOn)
         {
@@ -27,7 +27,7 @@ public class Smartwatch : Device
         }
     }
 
-    public override object GetInfo()
+    public object GetInfo()
     {
         return new
         {

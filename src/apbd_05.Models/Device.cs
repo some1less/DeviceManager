@@ -1,6 +1,6 @@
 ﻿namespace Models;
 
-public abstract class Device
+public class Device
 {
     public string Id { get; set; }
     public string Name { get; set; }
@@ -16,7 +16,26 @@ public abstract class Device
         OriginalVersion = originalVersion;
     }
 
-    public abstract void TurnMode();
+    public void TurnMode()
+    {
+        if (IsTurnedOn)
+        {
+            IsTurnedOn = false;
+        }
+        else
+        {
+            IsTurnedOn = true;
+        }
+    }
 
-    public abstract object GetInfo();
+    public object GetInfo()
+    {
+        return new
+        {
+            Type = "Device",
+            Id,
+            Name,
+            IsTurnedOn
+        };
+    }
 }

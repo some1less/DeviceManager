@@ -1,5 +1,7 @@
 using APBD_05.ServiceLogic;
 using DTOs;
+using DTOs.embeddeddevice;
+using DTOs.personalcomputer;
 using Infrastructure;
 using Models;
 
@@ -25,19 +27,69 @@ public class DeviceService : IDeviceService
         return device;
     }
     
-    public void AddSmartwatch(Smartwatch device)
+    public SmartwatchDto AddSmartwatch(SmartwatchDto device)
     {
-        _deviceRepository.AddSmartwatch(device);
+        Smartwatch sw = new Smartwatch
+        {
+            Id = device.Id,
+            Name = device.Name,
+            IsTurnedOn = device.IsTurnedOn,
+            BatteryLevel = device.BatteryLevel
+        };
+        
+        sw.Id = _deviceRepository.AddSmartwatch(sw);
+
+        return new SmartwatchDto
+        {
+            Id = sw.Id,
+            Name = sw.Name,
+            IsTurnedOn = sw.IsTurnedOn,
+            BatteryLevel = sw.BatteryLevel
+        };
     }
     
-    public void AddPersonalComputer(PersonalComputer device)
-    { 
-        _deviceRepository.AddPersonalComputer(device);
+    public PersonalComputerDto AddPersonalComputer(PersonalComputerDto device)
+    {
+        PersonalComputer pc = new PersonalComputer
+        {
+            Id = device.Id,
+            Name = device.Name,
+            IsTurnedOn = device.IsTurnedOn,
+            OperationSystem = device.OperationSystem
+        };
+
+        pc.Id = _deviceRepository.AddPersonalComputer(pc);
+
+        return new PersonalComputerDto
+        {
+            Id = pc.Id,
+            Name = pc.Name,
+            IsTurnedOn = pc.IsTurnedOn,
+            OperationSystem = pc.OperationSystem
+        };
     }
     
-    public void AddEmbeddedDevice(EmbeddedDevice device)
+    public EmbeddedDeviceDto AddEmbeddedDevice(EmbeddedDeviceDto device)
     {
-        _deviceRepository.AddEmbeddedDevice(device);
+        EmbeddedDevice ed = new EmbeddedDevice
+        {
+            Id = device.Id,
+            Name = device.Name,
+            IsTurnedOn = device.IsTurnedOn,
+            IpAddress = device.IpAddress,
+            NetworkName = device.NetworkName
+        };
+        
+        ed.Id = _deviceRepository.AddEmbeddedDevice(ed);
+
+        return new EmbeddedDeviceDto
+        {
+            Id = ed.Id,
+            Name = ed.Name,
+            IsTurnedOn = ed.IsTurnedOn,
+            IpAddress = ed.IpAddress,
+            NetworkName = ed.NetworkName
+        };
     }
     
     public Task<bool> ModifySmartwatch(Smartwatch sw)

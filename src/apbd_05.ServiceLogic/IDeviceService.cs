@@ -1,4 +1,6 @@
 using DTOs;
+using DTOs.embeddeddevice;
+using DTOs.personalcomputer;
 using Models;
 
 namespace APBD_05.ServiceLogic;
@@ -8,13 +10,13 @@ public interface IDeviceService
     IEnumerable<DeviceDto> GetAllDevices();
     Device GetDeviceById(string id);
     
-    void AddSmartwatch(Smartwatch device);
+    SmartwatchDto AddSmartwatch(SmartwatchDto device);
     Task<bool> ModifySmartwatch(Smartwatch device);
     
-    void AddPersonalComputer(PersonalComputer device);
+    PersonalComputerDto AddPersonalComputer(PersonalComputerDto device);
     Task<bool> ModifyPersonalComputer(PersonalComputer device);
     
-    void AddEmbeddedDevice(EmbeddedDevice device);
+    EmbeddedDeviceDto AddEmbeddedDevice(EmbeddedDeviceDto device);
     Task<bool> ModifyEmbeddedDevice(EmbeddedDevice device);
     
     Task<bool> RemoveDevice(string id);

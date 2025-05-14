@@ -157,7 +157,7 @@ public class DeviceRepository : IDeviceRepository
         throw new InvalidOperationException($"Device is not found: '{id}'");
     }
 
-    public void AddSmartwatch(Smartwatch device)
+    public string AddSmartwatch(Smartwatch device)
     {
         /*it was said that user can't provide id
         so while creating user will specify name, ...  and DEVICE TYPE
@@ -200,11 +200,12 @@ public class DeviceRepository : IDeviceRepository
             command2.Parameters.AddWithValue("@BatteryLevel", device.BatteryLevel);
             
             command2.ExecuteNonQuery();
-            
+            return device.Id;
+
         }
     }
     
-    public void AddPersonalComputer(PersonalComputer device)
+    public string AddPersonalComputer(PersonalComputer device)
     {
         const string maxSql =
             "SELECT MAX(CONVERT(INT, SUBSTRING(Id, 4, Len(Id)-3))) " + 
@@ -230,10 +231,12 @@ public class DeviceRepository : IDeviceRepository
             command2.Parameters.AddWithValue("@OperationSystem", device.OperationSystem);
             
             command2.ExecuteNonQuery();
+            return device.Id;
+
         }
     }
     
-    public void AddEmbeddedDevice(EmbeddedDevice device)
+    public string AddEmbeddedDevice(EmbeddedDevice device)
     {
         const string maxSql =
             "SELECT MAX(CONVERT(INT, SUBSTRING(Id, 4, Len(Id)-3))) " + 
@@ -259,7 +262,9 @@ public class DeviceRepository : IDeviceRepository
             command2.Parameters.AddWithValue("@NetworkName", device.NetworkName);
 
             command2.ExecuteNonQuery();
+            return device.Id;
         }
+        
     }
 
     public async Task<bool> ModifySmartwatch(Smartwatch smartwatch)

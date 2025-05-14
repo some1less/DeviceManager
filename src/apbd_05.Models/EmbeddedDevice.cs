@@ -30,7 +30,7 @@ public class EmbeddedDevice : Device
             throw new Exception("ConnectionException");
     }
 
-    public override void TurnMode()
+    public void TurnMode()
     {
         if (IsTurnedOn)
         {
@@ -45,7 +45,7 @@ public class EmbeddedDevice : Device
         }
     }
 
-    public override object GetInfo()
+    public object GetInfo()
     {
         return new
         {

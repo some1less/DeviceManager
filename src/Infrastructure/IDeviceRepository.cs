@@ -8,9 +8,9 @@ public interface IDeviceRepository
     IEnumerable<DeviceDto> GetAllDevices();
     Device GetDeviceById(string id);
     
-    void AddSmartwatch(Smartwatch device);
-    void AddPersonalComputer(PersonalComputer device);
-    void AddEmbeddedDevice(EmbeddedDevice device);
+    string AddSmartwatch(Smartwatch device);
+    string AddPersonalComputer(PersonalComputer device);
+    string AddEmbeddedDevice(EmbeddedDevice device);
     Task<bool> ModifySmartwatch(Smartwatch device);
 
     Task<bool> ModifyPersonalComputer(PersonalComputer device);
